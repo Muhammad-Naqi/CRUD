@@ -14,7 +14,7 @@ const userLogin = async (email,password) =>{
         if(passwordMatch){
             return { success: true, message: 'Login successful', user }
         }else{
-            return { success: false, message: 'Entered password is incorrect', user }
+            return { success: false, message: 'Entered password is incorrect'}
         }
     }
     catch (err) {
