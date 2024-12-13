@@ -15,8 +15,6 @@ const createUser = async (req, res) => {
         
         const emailValidation = await sameEmailValidation(userBody.email)
         
-        console.log("validationCheck:", validationCheck)
-        console.log("emailValidation :", emailValidation)
         if(validationCheck.success){
             return res.status(404).json({message:validationCheck.message})
         }
@@ -66,8 +64,7 @@ const getUserById = async (req, res) =>{
 const deleteUser = async (req, res) =>{
     try{
         const userId = req.params._id;
-        console.log(userId);
-        
+
         const deletedUser = await User.findByIdAndDelete(userId);
         
         if (deletedUser) {
@@ -105,7 +102,6 @@ const updateUser = async (req, res) => {
 
 const login = async (req, res) => {
     const { email, password } = req.body;
-    console.log(password)
     const result = await userLogin(email, password);
     
     if (result.success) {
