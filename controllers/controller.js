@@ -105,6 +105,7 @@ const updateUser = async (req, res) => {
 
 const login = async (req, res) => {
     const { email, password } = req.body;
+    console.log(password)
     const result = await userLogin(email, password);
     
     if (result.success) {

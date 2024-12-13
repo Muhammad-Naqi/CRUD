@@ -4,12 +4,12 @@ import bcrypt from 'bcrypt'
 const userLogin = async (email,password) =>{
    try{
         const user = await User.findOne({email})
-        console.log(user);
         if(!user){
             return { success: false, message: 'User not found' }
         }
         
         const passwordMatch = await bcrypt.compare(password, user.password)
+        console.log(passwordMatch)
 
         if(passwordMatch){
             return { success: true, message: 'Login successful', user }
