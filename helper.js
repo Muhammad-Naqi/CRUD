@@ -49,7 +49,7 @@ const sameEmailValidation = async (email) => {
         if (existingUser) {
             return { success: false, message: 'The email already exists.' };
         }
-        return { success: false, message: null };
+        return { success: false };
     } catch (err) {
         return { success: false, message: 'Something went wrong', error: err };
     }

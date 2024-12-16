@@ -4,11 +4,11 @@ import {createUser,getAllusers,getUserById,deleteUser,updateUser,login,reset} fr
 
 
 
-router.post('/user',createUser)
-router.get('/user',getAllusers)
-router.get('/user/:_id',getUserById)
-router.delete('/user/:_id?',deleteUser)
-router.put('/user/:_id',updateUser)
+router.post('/createUser',createUser)
+router.get('/getAllusers',getAllusers)
+router.get('/getUserById/:_id',getUserById)
+router.delete('/deleteUser/:_id?',deleteUser)
+router.put('/updateUser/:_id',updateUser)
 router.post('/login',login);
 router.patch('/reset',reset)
 
