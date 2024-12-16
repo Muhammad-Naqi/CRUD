@@ -1,37 +1,41 @@
 import User from '../models/user.js';
 import {userLogin,passwordReset,sameEmailValidation,otherValidations} from '../helper.js'
-import bcrypt from 'bcrypt'
-
+import bcrypt from 'bcrypt';
 const createUser = async (req, res) => {
     try {
-        const userBody = req.body
+        const userBody = req.body;
+
         const validationCheck = await otherValidations(
             userBody.name,
             userBody.email,
             userBody.age,
             userBody.password,
             userBody.confirmPassword
-        )
-        
-        const emailValidation = await sameEmailValidation(userBody.email)
-        
-        console.log("validationCheck:", validationCheck)
-        console.log("emailValidation :", emailValidation)
-        if(validationCheck.success){
-            return res.status(404).json({message:validationCheck.message})
+        );
+
+        const emailValidation = await sameEmailValidation(userBody.email);
+
+       
+        if (validationCheck.success) {
+            return res.status(404).json({ message: validationCheck.message }); // Add return
         }
-        else if(userBody.email === emailValidation.email){
-            return res.status(401).json({ message: emailValidation.message})
+        else if (emailValidation) {
+            return res.status(401).json({ message: emailValidation.message });
         }
-            
-        userBody.password = await bcrypt.hash(userBody.password,10)
+
+        userBody.password = await bcrypt.hash(userBody.password, 10);
+
         const user = await User.create(userBody);
-        res.json(user)
-    }catch (error) {
-        res.status(500).json({message:'something went wrong'})
+        if (user) {
+            return res.json(user);
+        } else {
+            return res.json({ message: "User was not created" });
+        }
+    } catch (error) {
+        return res.status(500).json({ message: 'Something went wrong' });
     }
-    
-}
+};
+
 
 const getAllusers = async (req, res) => {
 
@@ -66,8 +70,7 @@ const getUserById = async (req, res) =>{
 const deleteUser = async (req, res) =>{
     try{
         const userId = req.params._id;
-        console.log(userId);
-        
+
         const deletedUser = await User.findByIdAndDelete(userId);
         
         if (deletedUser) {
@@ -105,7 +108,6 @@ const updateUser = async (req, res) => {
 
 const login = async (req, res) => {
     const { email, password } = req.body;
-    console.log(password)
     const result = await userLogin(email, password);
     
     if (result.success) {
