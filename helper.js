@@ -43,39 +43,34 @@ const passwordReset = async (email, password, confirmPassword) => {
 };
 
 const sameEmailValidation = async (email) => {
-    try {
+        console.log(email,"asa")
         const existingUser = await User.findOne({ email });
-        console.log(existingUser)
-        if (existingUser) {
+        console.log(existingUser.email)
+        if (existingUser.email === email) {
             return { success: false, message: 'The email already exists.' };
+        }else{
+            return { success: false };
         }
-        return { success: false };
-    } catch (err) {
-        return { success: false, message: 'Something went wrong', error: err };
-    }
 };
 
 const otherValidations = async (name, email, age, password, confirmPassword) => {
-    try {
         if (!name) {
             return { success: false, message: 'The name field cannot be empty' };
         }
-        if (!email) {
+        else if (!email) {
             return { success: false, message: 'The email field cannot be empty' };
         }
-        if (!age) {
+        else if (!age) {
             return { success: false, message: 'The age field cannot be empty' };
         }
-        if (!password || !confirmPassword) {
+        else if (!password || !confirmPassword) {
             return {
                 success: false,
                 message: 'The password and confirmPassword fields cannot be empty',
             };
+        }else {
+            return {success: false}
         }
-        return { success: true };
-    } catch (err) {
-        return { success: false, message: 'Something went wrong', error: err };
-    }
 };
 
 export { userLogin, passwordReset, sameEmailValidation, otherValidations };

@@ -3,37 +3,41 @@ import {userLogin,passwordReset,sameEmailValidation,otherValidations} from '../h
 import bcrypt from 'bcrypt';
 const createUser = async (req, res) => {
     try {
-        const userBody = req.body
+        const userBody = req.body;
+
         const validationCheck = await otherValidations(
             userBody.name,
             userBody.email,
             userBody.age,
             userBody.password,
             userBody.confirmPassword
-        )
-        
-        const emailValidation = await sameEmailValidation(userBody.email)
-        
-        console.log(userBody.email === emailValidation.email)
-        if(validationCheck.success){
-            return res.status(404).json({message:validationCheck.message})
+        );
+
+        const emailValidation = await sameEmailValidation(userBody.email);
+
+        console.log(validationCheck,"12ccac")
+        console.log(emailValidation,"accac")
+       
+        if (validationCheck.success) {
+            return res.status(404).json({ message: validationCheck.message }); // Add return
         }
-        if(userBody.email === emailValidation.email){
-            return res.status(401).json({ message: emailValidation.message})
+        else if (emailValidation) {
+            return res.status(401).json({ message: emailValidation.message });
         }
-        
-        userBody.password = await bcrypt.hash(userBody.password,10)
+
+        userBody.password = await bcrypt.hash(userBody.password, 10);
+
         const user = await User.create(userBody);
-        if(user){
-            return res.json(user)
-        }else{
-            return res.json({message: "User Was not created"})
+        if (user) {
+            return res.json(user);
+        } else {
+            return res.json({ message: "User was not created" });
         }
-    }catch (error) {
-        res.status(500).json({message:'something went wrong'})
+    } catch (error) {
+        return res.status(500).json({ message: 'Something went wrong' });
     }
-    
-}
+};
+
 
 const getAllusers = async (req, res) => {
 
