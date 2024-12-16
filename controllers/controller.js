@@ -15,8 +15,6 @@ const createUser = async (req, res) => {
 
         const emailValidation = await sameEmailValidation(userBody.email);
 
-        console.log(validationCheck,"12ccac")
-        console.log(emailValidation,"accac")
        
         if (validationCheck.success) {
             return res.status(404).json({ message: validationCheck.message }); // Add return

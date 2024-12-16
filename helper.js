@@ -8,7 +8,6 @@ const userLogin = async (email, password) => {
         }
 
         const passwordMatch = await bcrypt.compare(password, user.password);
-        console.log(passwordMatch)
 
         if (passwordMatch) {
             return { success: true, message: 'Login successful', user };
@@ -43,9 +42,7 @@ const passwordReset = async (email, password, confirmPassword) => {
 };
 
 const sameEmailValidation = async (email) => {
-        console.log(email,"asa")
         const existingUser = await User.findOne({ email });
-        console.log(existingUser.email)
         if (existingUser.email === email) {
             return { success: false, message: 'The email already exists.' };
         }else{
