@@ -1,10 +1,10 @@
 import User from '../models/user.js';
 import {userLogin,passwordReset,sameEmailValidation,otherValidations} from '../helper.js'
-import bcrypt from 'bcrypt'
-
+import bcrypt from 'bcrypt';
 const createUser = async (req, res) => {
     try {
         const userBody = req.body
+        console.log(userBody)
         const validationCheck = await otherValidations(
             userBody.name,
             userBody.email,
@@ -13,17 +13,24 @@ const createUser = async (req, res) => {
             userBody.confirmPassword
         )
         
+        console.log(userBody.email)
         const emailValidation = await sameEmailValidation(userBody.email)
         
+        console.log(validationCheck)
+        console.log(emailValidation)
+        console.log(userBody.email === emailValidation.email)
         if(validationCheck.success){
             return res.status(404).json({message:validationCheck.message})
         }
-        else if(userBody.email === emailValidation.email){
+        if(userBody.email === emailValidation.email){
             return res.status(401).json({ message: emailValidation.message})
         }
-            
+        
+        console.log("gggggs")
         userBody.password = await bcrypt.hash(userBody.password,10)
+        console.log(userBody.password)
         const user = await User.create(userBody);
+        console.log(user)
         res.json(user)
     }catch (error) {
         res.status(500).json({message:'something went wrong'})

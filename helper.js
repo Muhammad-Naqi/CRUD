@@ -45,16 +45,17 @@ const passwordReset = async (email, password, confirmPassword) => {
 const sameEmailValidation = async (email) => {
     try {
         const existingUser = await User.findOne({ email });
+        console.log(existingUser)
         if (existingUser) {
             return { success: false, message: 'The email already exists.' };
         }
-        return { success: true, message: null };
+        return { success: false, message: null };
     } catch (err) {
         return { success: false, message: 'Something went wrong', error: err };
     }
 };
 
-const otherValidations = async(name, email, age, password, confirmPassword) => {
+const otherValidations = async (name, email, age, password, confirmPassword) => {
     try {
         if (!name) {
             return { success: false, message: 'The name field cannot be empty' };
